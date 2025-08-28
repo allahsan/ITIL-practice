@@ -22,6 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update statistics on home page
     updateUserStatistics();
     
+    // Ensure home button is hidden initially
+    const homeButton = document.getElementById('homeButton');
+    if (homeButton) homeButton.classList.add('hidden');
+    
     // Initialize event listeners
     initializeEventListeners();
     
@@ -378,6 +382,7 @@ function updateNavigationButtons() {
     
     if (currentQuestionIndex === currentQuestions.length - 1) {
         nextBtn.textContent = 'Finish →';
+        nextBtn.disabled = false; // Ensure Finish button is not disabled
     } else {
         nextBtn.textContent = 'Next →';
     }
@@ -392,10 +397,18 @@ function previousQuestion() {
 function nextQuestion() {
     if (currentQuestionIndex < currentQuestions.length - 1) {
         loadQuestion(currentQuestionIndex + 1);
-    } else if (examMode === 'exam' || examMode === 'practice') {
-        // Last question - prompt to submit
-        if (confirm('You have reached the last question. Do you want to submit your exam?')) {
-            submitExam();
+    } else {
+        // Last question - handle based on mode
+        if (examMode === 'review') {
+            // In review mode, just go back to home
+            if (confirm('You have reached the end of the review. Return to home?')) {
+                backToHome();
+            }
+        } else if (examMode === 'exam' || examMode === 'practice') {
+            // In exam/practice mode, prompt to submit
+            if (confirm('You have reached the last question. Do you want to submit your exam?')) {
+                submitExam();
+            }
         }
     }
 }
@@ -553,18 +566,27 @@ function showQuizInterface() {
     document.getElementById('landingPage').classList.add('hidden');
     document.getElementById('quizInterface').classList.remove('hidden');
     document.getElementById('resultsPage').classList.add('hidden');
+    // Show home button
+    const homeButton = document.getElementById('homeButton');
+    if (homeButton) homeButton.classList.remove('hidden');
 }
 
 function showResultsPage() {
     document.getElementById('landingPage').classList.add('hidden');
     document.getElementById('quizInterface').classList.add('hidden');
     document.getElementById('resultsPage').classList.remove('hidden');
+    // Show home button
+    const homeButton = document.getElementById('homeButton');
+    if (homeButton) homeButton.classList.remove('hidden');
 }
 
 function showLandingPage() {
     document.getElementById('landingPage').classList.remove('hidden');
     document.getElementById('quizInterface').classList.add('hidden');
     document.getElementById('resultsPage').classList.add('hidden');
+    // Hide home button on landing page
+    const homeButton = document.getElementById('homeButton');
+    if (homeButton) homeButton.classList.add('hidden');
 }
 
 function backToHome() {

@@ -544,6 +544,48 @@ a:hover {
 .badge-info { background-color: var(--info-color); color: var(--white); }
 
 /* ==================== */
+/* Home Button */
+/* ==================== */
+.home-button {
+  position: fixed;
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
+  z-index: 999;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-base);
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.home-button:hover {
+  background-color: var(--dark-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.home-button:active {
+  transform: translateY(0);
+}
+
+.home-button-icon {
+  font-size: var(--font-lg);
+}
+
+/* Hide home button on landing page */
+#landingPage:not(.hidden) ~ .home-button,
+.home-button.hidden {
+  display: none;
+}
+
+/* ==================== */
 /* Modal */
 /* ==================== */
 .modal {
