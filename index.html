@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ITIL Foundation Practice Exams - Interactive quiz platform with 80 questions from official sample papers">
+    <meta name="keywords" content="ITIL, Foundation, Practice, Exam, Quiz, Certification">
+    <meta name="author" content="ITIL Practice Platform">
+    
+    <title>ITIL Foundation Practice Exams</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1>ITIL Foundation Practice Exams</h1>
+            <p class="subtitle">Master ITIL concepts with interactive practice tests</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Landing Page (Initial View) -->
+        <div id="landingPage" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title text-center">Welcome to ITIL Practice Platform</h2>
+                </div>
+                <div class="card-body">
+                    <p class="text-center mb-3">
+                        Prepare for your ITIL Foundation certification with our comprehensive practice exams.
+                        Choose from different practice modes to enhance your learning experience.
+                    </p>
+                    
+                    <div class="alert alert-info">
+                        <strong>📚 80 Questions Available</strong> - From official ITIL sample papers<br>
+                        <strong>⏱️ 60 Minutes</strong> - Per full exam<br>
+                        <strong>✅ Pass Mark</strong> - 26/40 (65%)
+                    </div>
+
+                    <!-- Practice Mode Selection -->
+                    <div class="mt-4">
+                        <h3 class="text-center mb-3">Select Practice Mode</h3>
+                        
+                        <div class="flex flex-column gap-2">
+                            <!-- Full Exam Mode -->
+                            <div class="card">
+                                <h4>📝 Full Exam Mode</h4>
+                                <p class="text-muted">Complete 40-question timed exam (60 minutes)</p>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" onclick="startExam('sample1')">
+                                        Sample Paper 1
+                                    </button>
+                                    <button class="btn btn-primary" onclick="startExam('sample2')">
+                                        Sample Paper 2
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Quick Practice Mode -->
+                            <div class="card">
+                                <h4>⚡ Quick Practice</h4>
+                                <p class="text-muted">Random questions for quick review</p>
+                                <div class="btn-group">
+                                    <button class="btn btn-secondary" onclick="startQuickPractice(10)">
+                                        10 Questions
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="startQuickPractice(20)">
+                                        20 Questions
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Review Mode -->
+                            <div class="card">
+                                <h4>📖 Review Mode</h4>
+                                <p class="text-muted">Study all questions with answers revealed</p>
+                                <button class="btn btn-warning btn-block" onclick="startReviewMode()">
+                                    Start Review
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="mt-4 hidden" id="userStats">
+                        <h3 class="text-center">Your Progress</h3>
+                        <div class="progress">
+                            <div class="progress-bar" id="progressBar" style="width: 0%">0%</div>
+                        </div>
+                        <p class="text-center text-muted">
+                            <span id="questionsAnswered">0</span> / 80 questions practiced
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-outline" onclick="showInstructions()">
+                        📋 View Instructions
+                    </button>
+                    <button class="btn btn-outline" onclick="clearProgress()">
+                        🗑️ Clear Progress
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Interface (Hidden Initially) -->
+        <div id="quizInterface" class="section hidden">
+            <!-- Quiz Header -->
+            <div class="card mb-3">
+                <div class="flex flex-between">
+                    <div>
+                        <h3 id="examTitle">ITIL Foundation Exam</h3>
+                        <p class="text-muted">
+                            Question <span id="currentQuestionNumber">1</span> of 
+                            <span id="totalQuestions">40</span>
+                        </p>
+                    </div>
+                    <div class="flex gap-2">
+                        <!-- Timer -->
+                        <div class="timer" id="timerDisplay">
+                            <span class="timer-icon">⏱️</span>
+                            <span class="timer-text" id="timerText">60:00</span>
+                        </div>
+                        <!-- Controls -->
+                        <button class="btn btn-small" onclick="toggleTimer()" id="pauseBtn">⏸️ Pause</button>
+                        <button class="btn btn-small btn-danger" onclick="submitExam()">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Display -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4 id="questionText">Question will appear here...</h4>
+                    
+                    <!-- Answer Options -->
+                    <div class="radio-group mt-3" id="answerOptions">
+                        <!-- Options will be dynamically generated -->
+                    </div>
+                    
+                    <!-- Question Actions -->
+                    <div class="flex flex-between mt-3">
+                        <button class="btn btn-warning" onclick="flagQuestion()" id="flagBtn">
+                            🚩 Flag for Review
+                        </button>
+                        <button class="btn btn-outline" onclick="clearAnswer()">
+                            Clear Answer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="card">
+                <div class="card-header">
+                    <h4>Question Navigation</h4>
+                </div>
+                <div class="card-body">
+                    <div class="question-nav" id="questionNav">
+                        <!-- Question navigation buttons will be generated -->
+                    </div>
+                    
+                    <div class="flex flex-between mt-3">
+                        <button class="btn btn-secondary" onclick="previousQuestion()" id="prevBtn">
+                            ← Previous
+                        </button>
+                        <button class="btn btn-secondary" onclick="nextQuestion()" id="nextBtn">
+                            Next →
+                        </button>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="flex gap-2">
+                        <span class="badge badge-success">Answered</span>
+                        <span class="badge badge-warning">Flagged</span>
+                        <span class="badge badge-primary">Current</span>
+                        <span class="badge">Not Visited</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Page (Hidden Initially) -->
+        <div id="resultsPage" class="section hidden">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2 class="card-title">Exam Results</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Score Display -->
+                    <div class="text-center mb-4">
+                        <h1 class="text-xxxl" id="scoreDisplay">0/40</h1>
+                        <h3 id="percentageDisplay">0%</h3>
+                        <div class="mt-2">
+                            <span class="badge badge-large" id="passFailBadge">RESULT</span>
+                        </div>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="flex flex-between mb-4">
+                        <div class="text-center">
+                            <h4 class="text-success">✓ Correct</h4>
+                            <p class="text-xxl" id="correctCount">0</p>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="text-danger">✗ Incorrect</h4>
+                            <p class="text-xxl" id="incorrectCount">0</p>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="text-warning">⏱️ Time</h4>
+                            <p class="text-xxl" id="timeTaken">00:00</p>
+                        </div>
+                    </div>
+
+                    <!-- Review Answers Button -->
+                    <button class="btn btn-primary btn-block btn-large" onclick="reviewAnswers()">
+                        📋 Review All Answers
+                    </button>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-secondary" onclick="retakeExam()">
+                        🔄 Retake Exam
+                    </button>
+                    <button class="btn btn-outline" onclick="backToHome()">
+                        🏠 Back to Home
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Review (Hidden Initially) -->
+            <div id="detailedReview" class="mt-4 hidden">
+                <!-- Review content will be dynamically generated -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="section bg-light text-center">
+        <div class="container">
+            <p class="text-muted">
+                ITIL® is a registered trademark of AXELOS Limited.<br>
+                This practice platform is for educational purposes only.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Instructions Modal -->
+    <div id="instructionsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Exam Instructions</h2>
+            </div>
+            <div class="modal-body">
+                <h3>General Guidelines</h3>
+                <ul>
+                    <li>Each exam consists of 40 multiple-choice questions</li>
+                    <li>You have 60 minutes to complete the exam</li>
+                    <li>Pass mark is 26 out of 40 (65%)</li>
+                    <li>There is only one correct answer per question</li>
+                    <li>You can flag questions for review</li>
+                    <li>You can navigate between questions freely</li>
+                </ul>
+                
+                <h3>Navigation</h3>
+                <ul>
+                    <li>Use Previous/Next buttons to move between questions</li>
+                    <li>Click on question numbers to jump directly</li>
+                    <li>Flagged questions appear in orange</li>
+                    <li>Answered questions appear in green</li>
+                </ul>
+                
+                <h3>Timer</h3>
+                <ul>
+                    <li>Timer starts automatically when exam begins</li>
+                    <li>You can pause the timer if needed</li>
+                    <li>Warning appears at 10 minutes remaining</li>
+                    <li>Exam auto-submits when time expires</li>
+                </ul>
+            </div>
+            <div class="modal-footer text-center">
+                <button class="btn btn-primary" onclick="closeModal('instructionsModal')">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/questions.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/storage.js"></script>
+</body>
+</html>
