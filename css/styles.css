@@ -549,7 +549,7 @@ a:hover {
 .home-button {
   position: fixed;
   top: var(--spacing-lg);
-  left: var(--spacing-lg);
+  right: var(--spacing-lg);
   z-index: 999;
   background-color: var(--primary-color);
   color: var(--white);
